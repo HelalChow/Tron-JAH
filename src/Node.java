@@ -6,29 +6,20 @@ import java.util.ArrayList;
 
 public class Node implements Comparable<Node> {
 	private String nodeName; 										
-	private Node prevCity;					 						
+	private Node parent;					 						
 	private int index; 												
-	private int distance = Integer.MAX_VALUE; 						
+	private int distance = Integer.MAX_VALUE;
+	private double cost = Integer.MAX_VALUE;
 	private ArrayList<Node> childrenNodes = new ArrayList<Node>();
 	private int x;
 	private int y;
-	private double cost; //in this simulation, all nodes have the same cost
-
-	public Node(String name, ArrayList<Node> nextNode) {
-		this.nodeName = name;
-		this.childrenNodes = nextNode;
-	}	
-
-	public Node(String cityName, ArrayList<Node> nextCity, int index) {
-		this.nodeName = cityName;
-		this.childrenNodes = nextCity;
-		this.index = index;
-	}
+	private int owner;
 	
 	public Node(int row, int column) {
 		this.x = row;
 		this.y = column;
 		this.nodeName = ("(" + x + ", " + y + ")");
+		this.owner = -1;
 	}
 	
 	public int x() {
@@ -52,7 +43,7 @@ public class Node implements Comparable<Node> {
 	}
 
 	public ArrayList<Node> getChildren() {
-		return childrenNodes;
+		return this.childrenNodes;
 	}
 	
 	public void setDistance(int dist) {
@@ -63,25 +54,33 @@ public class Node implements Comparable<Node> {
 		return distance;
 	}
 	
-	public String toString() {
-		return nodeName;
-	}
-	
-	public void setParent(Node lastCity) {
-		this.prevCity = lastCity;
+	public void setParent(Node prevNode) {
+		this.parent = prevNode;
 	}
 	
 	public Node getParent() {
-		return prevCity;
+		return parent;
 	}
 	
 	public int getIndex() {
 		return index;
 	}
 
+	public String toString() {
+		return this.nodeName;
+	}
+	
+    public void setOwner(int owner)
+    {
+    	this.owner = owner;
+    }
+    public int getOwner()
+    {
+    	return this.owner;
+    }
+    
+    
 	public int compareTo(Node o) {
-		if(this.cost > o.cost) return 1;
-		else if(this.cost < o.cost) return -1;
-		else return 0;
+		return Double.compare(this.cost, o.cost);
 	}
 }
